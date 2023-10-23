@@ -23,8 +23,15 @@
     "vitest": "^0.32.2"
   },
   "dependencies": {
+    "@cornerstonejs/calculate-suv": "^1.1.0",
     "@cornerstonejs/core": "^1.23.3",
+    "@cornerstonejs/dicom-image-loader": "^1.23.3",
+    "@cornerstonejs/streaming-image-volume-loader": "^1.23.3",
+    "@cornerstonejs/tools": "^1.23.3",
     "@solidjs/router": "^0.8.3",
+    "dcmjs": "^0.29.10",
+    "dicom-parser": "^1.8.21",
+    "dicomweb-client": "^0.10.3",
     "solid-js": "^1.7.6"
   }
 }
