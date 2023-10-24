@@ -11,8 +11,8 @@ const routes = [
         component: lazy(() => import('./pages/magnify-tool')),
     },
     {
-        path: '/render',
-        component: lazy(() => import('./pages/render')),
+        path: '/stack-images',
+        component: lazy(() => import('./pages/stack-images')),
     },
 ];
 
@@ -24,7 +24,7 @@ const App = () => {
             <aside>
                 <A href="/streaming-image-volume-loader">streaming-image-volume-loader</A>
                 <A href="/magnify-tool">magnify-tool</A>
-                <A href="/render">render</A>
+                <A href="/stack-images">stack-images</A>
             </aside>
             <Routes />
         </>
