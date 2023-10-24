@@ -3,8 +3,8 @@ import * as cornerstone from '@cornerstonejs/core';
 import * as cornerstoneTools from '@cornerstonejs/tools';
 import cornerstoneDICOMImageLoader from '@cornerstonejs/dicom-image-loader';
 
-window.cornerstone = cornerstone;
-window.cornerstoneTools = cornerstoneTools;
+//window.cornerstone = cornerstone;
+//window.cornerstoneTools = cornerstoneTools;
 const { preferSizeOverAccuracy, useNorm16Texture } =
     cornerstone.getConfiguration().rendering;
 
@@ -25,7 +25,7 @@ export default function initCornerstoneDICOMImageLoader() {
         maxWebWorkers = Math.min(navigator.hardwareConcurrency, 7);
     }
 
-    var config = {
+    const config = {
         maxWebWorkers,
         startWebWorkersOnDemand: false,
         taskConfiguration: {

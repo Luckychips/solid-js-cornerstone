@@ -1,24 +1,20 @@
-import { createEffect } from 'solid-js';
+import { createEffect, onCleanup } from 'solid-js';
 import { RenderingEngine, Enums, Types } from '@cornerstonejs/core';
 import * as cornerstoneTools from '@cornerstonejs/tools';
-import { setTitleAndDescription, initDemo, createImageIdsAndCacheMetaData } from '../../helpers/core';
+import { initDemo, createImageIdsAndCacheMetaData } from '../../helpers/core';
 
 const MagnifyTool = () => {
-    createEffect(async () => {
-        const {
-            MagnifyTool,
-            PanTool,
-            ZoomTool,
-            ToolGroupManager,
-            Enums: csToolsEnums,
-        } = cornerstoneTools;
+    const {
+        MagnifyTool,
+        PanTool,
+        ZoomTool,
+        ToolGroupManager,
+        Enums: csToolsEnums,
+    } = cornerstoneTools;
 
+    createEffect(async () => {
         const { ViewportType } = Enums;
         const { MouseBindings } = csToolsEnums;
-        setTitleAndDescription(
-            'Magnify Tool',
-            'Magnify Tool to zoom in in part of the viewport (StackViewport only as of now)'
-        );
 
         const content = document.getElementById('content');
         const element = document.createElement('div');
@@ -30,50 +26,36 @@ const MagnifyTool = () => {
         const instructions = document.createElement('p');
         instructions.innerText = 'Left Click to use selected tool';
         content.append(instructions);
-        const toolGroupId = 'STACK_TOOL_GROUP_ID';
         await initDemo();
 
-        // Add tools to Cornerstone3D
         cornerstoneTools.addTool(MagnifyTool);
         cornerstoneTools.addTool(PanTool);
         cornerstoneTools.addTool(ZoomTool);
 
-        // Define a tool group, which defines how mouse events map to tool commands for
-        // Any viewport using the group
-        const toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
+        const toolGroup = ToolGroupManager.createToolGroup('STACK_TOOL_GROUP_ID');
 
-        // Add the tools to the tool group
         toolGroup.addTool(MagnifyTool.toolName);
         toolGroup.addTool(PanTool.toolName);
         toolGroup.addTool(ZoomTool.toolName);
 
-        // Set the initial state of the tools, here we set one tool active on left click.
-        // This means left click will draw that tool.
         toolGroup.setToolActive(MagnifyTool.toolName, {
             bindings: [
-                {
-                    mouseButton: MouseBindings.Primary, // Left Click
-                },
+                { mouseButton: MouseBindings.Primary },
             ],
         });
 
         toolGroup.setToolActive(PanTool.toolName, {
             bindings: [
-                {
-                    mouseButton: MouseBindings.Auxiliary, // Middle Click
-                },
+                { mouseButton: MouseBindings.Auxiliary },
             ],
         });
 
         toolGroup.setToolActive(ZoomTool.toolName, {
             bindings: [
-                {
-                    mouseButton: MouseBindings.Secondary, //
-                },
+                { mouseButton: MouseBindings.Secondary },
             ],
         });
 
-        // Get Cornerstone imageIds and fetch metadata into RAM
         const imageIds = await createImageIdsAndCacheMetaData({
             StudyInstanceUID:
                 '1.3.6.1.4.1.14519.5.2.1.7009.2403.334240657131972136850343327463',
@@ -82,11 +64,8 @@ const MagnifyTool = () => {
             wadoRsRoot: 'https://d3t6nz73ql33tx.cloudfront.net/dicomweb',
         });
 
-        // Instantiate a rendering engine
         const renderingEngineId = 'myRenderingEngine';
         const renderingEngine = new RenderingEngine(renderingEngineId);
-
-        // Create a stack viewport
         const viewportId = 'CT_STACK';
         const viewportInput = {
             viewportId,
@@ -95,14 +74,18 @@ const MagnifyTool = () => {
         };
 
         renderingEngine.enableElement(viewportInput);
-
-        // Set the tool group on the viewport
         toolGroup.addViewport(viewportId, renderingEngineId);
 
         const viewport = (renderingEngine.getViewport(viewportId)) as Types.IStackViewport;
         const stack = [imageIds[0]];
-        viewport.setStack(stack);
+        await viewport.setStack(stack);
         viewport.render();
+    });
+
+    onCleanup(() => {
+        cornerstoneTools.destroy();
+        const content = document.getElementById('content');
+        content.remove();
     });
 
     return  (
