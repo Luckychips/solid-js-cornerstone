@@ -1,9 +1,16 @@
-import { createEffect, createSignal } from 'solid-js';
+import {createEffect, createSignal, onCleanup} from 'solid-js';
 import * as cornerstone from '@cornerstonejs/core';
 import cornerstoneDICOMImageLoader from '@cornerstonejs/dicom-image-loader';
 import { initDemo } from '../../helpers/core';
+import * as cornerstoneTools from "@cornerstonejs/tools";
 
 const StackImages = () => {
+    const {
+        ToolGroupManager,
+        StackScrollTool,
+        MagnifyTool,
+        Enums: csToolsEnums,
+    } = cornerstoneTools;
     let [getFiles, setFiles] = createSignal([]);
 
     createEffect(async () => {
@@ -16,6 +23,7 @@ const StackImages = () => {
 
         content.appendChild(element);
         await initDemo();
+
         const renderingEngineId = 'myRenderingEngine';
         const renderingEngine = new cornerstone.RenderingEngine(renderingEngineId);
         const viewportId = 'CT_AXIAL_STACK';
@@ -36,8 +44,25 @@ const StackImages = () => {
 
             await viewport.setStack(imageIds, imageIds.length / 2);
             viewport.render();
+
+            const { MouseBindings } = csToolsEnums;
+            cornerstoneTools.addTool(StackScrollTool);
+            const toolGroup = ToolGroupManager.createToolGroup('PAGE-STACK-IMAGES');
+            toolGroup.addTool(StackScrollTool.toolName);
+            toolGroup.setToolActive(StackScrollTool.toolName, {
+                bindings: [
+                    { mouseButton: MouseBindings.Primary },
+                ],
+            });
+            toolGroup.addViewport(viewportId, renderingEngineId);
         }
     }, getFiles());
+
+    onCleanup(() => {
+        cornerstoneTools.destroy();
+        const content = document.getElementById('content');
+        content.remove();
+    });
 
     const selectFiles = (e) => {
         const content = document.getElementById('content');

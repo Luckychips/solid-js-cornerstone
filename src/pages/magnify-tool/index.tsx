@@ -32,7 +32,7 @@ const MagnifyTool = () => {
         cornerstoneTools.addTool(PanTool);
         cornerstoneTools.addTool(ZoomTool);
 
-        const toolGroup = ToolGroupManager.createToolGroup('STACK_TOOL_GROUP_ID');
+        const toolGroup = ToolGroupManager.createToolGroup('PAGE-MAGNIFY-TOOL');
 
         toolGroup.addTool(MagnifyTool.toolName);
         toolGroup.addTool(PanTool.toolName);
