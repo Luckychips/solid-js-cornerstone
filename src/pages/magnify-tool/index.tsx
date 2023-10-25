@@ -64,7 +64,7 @@ const MagnifyTool = () => {
             wadoRsRoot: 'https://d3t6nz73ql33tx.cloudfront.net/dicomweb',
         });
 
-        const renderingEngineId = 'myRenderingEngine';
+        const renderingEngineId = 'magnifyToolRenderingEngine';
         const renderingEngine = new RenderingEngine(renderingEngineId);
         const viewportId = 'CT_STACK';
         const viewportInput = {

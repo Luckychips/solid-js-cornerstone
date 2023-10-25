@@ -24,7 +24,7 @@ const StackImages = () => {
         content.appendChild(element);
         await initDemo();
 
-        const renderingEngineId = 'myRenderingEngine';
+        const renderingEngineId = 'stackImagesRenderingEngine';
         const renderingEngine = new cornerstone.RenderingEngine(renderingEngineId);
         const viewportId = 'CT_AXIAL_STACK';
 

@@ -21,7 +21,7 @@ const StreamingImageVolumeLoader = () => {
 
         // registerWebImageLoader(cs)
 
-        const renderingEngineId = 'myRenderingEngine';
+        const renderingEngineId = 'streamingImageVolumeLoaderRenderingEngine';
         const renderingEngine = new RenderingEngine(renderingEngineId);
         const viewportInput = [
             {
