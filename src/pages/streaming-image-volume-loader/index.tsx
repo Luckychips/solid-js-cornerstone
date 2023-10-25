@@ -1,10 +1,5 @@
 import { createEffect } from 'solid-js';
-import {
-    RenderingEngine,
-    Enums,
-    init as csInit,
-    Types,
-} from '@cornerstonejs/core';
+import { RenderingEngine, Enums, init as csInit, Types } from '@cornerstonejs/core';
 import { init as csTools3dInit } from '@cornerstonejs/tools';
 
 const StreamingImageVolumeLoader = () => {
@@ -37,7 +32,7 @@ const StreamingImageVolumeLoader = () => {
         renderingEngine.setViewports(viewportInput);
     });
 
-    return  (
+    return (
         <main>
             <section id="content" />
         </main>

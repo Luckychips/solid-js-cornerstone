@@ -54,11 +54,7 @@ export default function getPixelSpacingInformation(instance) {
             type: TYPES.UNKNOWN,
             isProjection,
         };
-    } else if (
-        PixelSpacing &&
-        ImagerPixelSpacing &&
-        PixelSpacing === ImagerPixelSpacing
-    ) {
+    } else if (PixelSpacing && ImagerPixelSpacing && PixelSpacing === ImagerPixelSpacing) {
         // If Imager Pixel Spacing and Pixel Spacing are present and they have the same values,
         // then the user should be informed that the measurements are at the detector plane
         return {
@@ -66,11 +62,7 @@ export default function getPixelSpacingInformation(instance) {
             type: TYPES.DETECTOR,
             isProjection,
         };
-    } else if (
-        PixelSpacing &&
-        ImagerPixelSpacing &&
-        PixelSpacing !== ImagerPixelSpacing
-    ) {
+    } else if (PixelSpacing && ImagerPixelSpacing && PixelSpacing !== ImagerPixelSpacing) {
         // If Imager Pixel Spacing and Pixel Spacing are present and they have different values,
         // then the user should be informed that these are "calibrated"
         // (in some unknown manner if Pixel Spacing Calibration Type and/or
@@ -89,12 +81,11 @@ export default function getPixelSpacingInformation(instance) {
             // Estimated Radiographic Magnification Factor and the user informed of that.
             // TODO: should this correction be done before all of this logic?
             CorrectedImagerPixelSpacing = ImagerPixelSpacing.map(
-                (pixelSpacing) =>
-                    pixelSpacing / EstimatedRadiographicMagnificationFactor
+                (pixelSpacing) => pixelSpacing / EstimatedRadiographicMagnificationFactor,
             );
         } else {
             console.warn(
-                'EstimatedRadiographicMagnificationFactor was not present. Unable to correct ImagerPixelSpacing.'
+                'EstimatedRadiographicMagnificationFactor was not present. Unable to correct ImagerPixelSpacing.',
             );
         }
 
@@ -102,10 +93,7 @@ export default function getPixelSpacingInformation(instance) {
             PixelSpacing: CorrectedImagerPixelSpacing,
             isProjection,
         };
-    } else if (
-        SequenceOfUltrasoundRegions &&
-        typeof SequenceOfUltrasoundRegions === 'object'
-    ) {
+    } else if (SequenceOfUltrasoundRegions && typeof SequenceOfUltrasoundRegions === 'object') {
         const { PhysicalDeltaX, PhysicalDeltaY } = SequenceOfUltrasoundRegions;
         const USPixelSpacing = [PhysicalDeltaX * 10, PhysicalDeltaY * 10];
 
@@ -118,7 +106,7 @@ export default function getPixelSpacingInformation(instance) {
         SequenceOfUltrasoundRegions.length > 1
     ) {
         console.warn(
-            'Sequence of Ultrasound Regions > one entry. This is not yet implemented, all measurements will be shown in pixels.'
+            'Sequence of Ultrasound Regions > one entry. This is not yet implemented, all measurements will be shown in pixels.',
         );
     } else if (isProjection === false && !ImagerPixelSpacing) {
         // If only Pixel Spacing is present, and this is not a projection radiograph,
@@ -131,6 +119,6 @@ export default function getPixelSpacingInformation(instance) {
     }
 
     console.warn(
-        'Unknown combination of PixelSpacing and ImagerPixelSpacing identified. Unable to determine spacing.'
+        'Unknown combination of PixelSpacing and ImagerPixelSpacing identified. Unable to determine spacing.',
     );
 }

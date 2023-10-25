@@ -5,15 +5,13 @@ import {
 } from '@cornerstonejs/streaming-image-volume-loader';
 
 export default function initVolumeLoader() {
-    volumeLoader.registerUnknownVolumeLoader(
-        cornerstoneStreamingImageVolumeLoader
-    );
+    volumeLoader.registerUnknownVolumeLoader(cornerstoneStreamingImageVolumeLoader);
     volumeLoader.registerVolumeLoader(
         'cornerstoneStreamingImageVolume',
-        cornerstoneStreamingImageVolumeLoader
+        cornerstoneStreamingImageVolumeLoader,
     );
     volumeLoader.registerVolumeLoader(
         'cornerstoneStreamingDynamicImageVolume',
-        cornerstoneStreamingDynamicImageVolumeLoader
+        cornerstoneStreamingDynamicImageVolumeLoader,
     );
 }

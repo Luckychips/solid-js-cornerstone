@@ -28,7 +28,6 @@ const App = () => {
             </aside>
             <Routes />
         </>
-
     );
 };
 

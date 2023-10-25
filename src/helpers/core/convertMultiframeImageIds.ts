@@ -5,24 +5,21 @@ import cornerstoneDICOMImageLoader from '@cornerstonejs/dicom-image-loader';
  **/
 async function prefetchMetadataInformation(imageIdsToPrefetch) {
     for (let i = 0; i < imageIdsToPrefetch.length; i++) {
-        await cornerstoneDICOMImageLoader.wadouri.loadImage(imageIdsToPrefetch[i])
-            .promise;
+        await cornerstoneDICOMImageLoader.wadouri.loadImage(imageIdsToPrefetch[i]).promise;
     }
 }
 
 function getFrameInformation(imageId) {
     if (imageId.includes('wadors:')) {
         const frameIndex = imageId.indexOf('/frames/');
-        const imageIdFrameless =
-            frameIndex > 0 ? imageId.slice(0, frameIndex + 8) : imageId;
+        const imageIdFrameless = frameIndex > 0 ? imageId.slice(0, frameIndex + 8) : imageId;
         return {
             frameIndex,
             imageIdFrameless,
         };
     } else {
         const frameIndex = imageId.indexOf('&frame=');
-        let imageIdFrameless =
-            frameIndex > 0 ? imageId.slice(0, frameIndex + 7) : imageId;
+        let imageIdFrameless = frameIndex > 0 ? imageId.slice(0, frameIndex + 7) : imageId;
         if (!imageIdFrameless.includes('&frame=')) {
             imageIdFrameless = imageIdFrameless + '&frame=';
         }

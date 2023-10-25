@@ -24,12 +24,12 @@ const { calibratedPixelSpacingMetadataProvider } = utilities;
  */
 
 export default async function createImageIdsAndCacheMetaData({
-     StudyInstanceUID,
-     SeriesInstanceUID,
-     SOPInstanceUID = null,
-     wadoRsRoot,
-     client = null,
- }) {
+    StudyInstanceUID,
+    SeriesInstanceUID,
+    SOPInstanceUID = null,
+    wadoRsRoot,
+    client = null,
+}) {
     const SOP_INSTANCE_UID = '00080018';
     const SERIES_INSTANCE_UID = '0020000E';
     const MODALITY = '00080060';
@@ -44,8 +44,7 @@ export default async function createImageIdsAndCacheMetaData({
     const modality = instances[0][MODALITY].Value[0];
     let imageIds = instances.map((instanceMetaData) => {
         const SeriesInstanceUID = instanceMetaData[SERIES_INSTANCE_UID].Value[0];
-        const SOPInstanceUIDToUse =
-            SOPInstanceUID || instanceMetaData[SOP_INSTANCE_UID].Value[0];
+        const SOPInstanceUIDToUse = SOPInstanceUID || instanceMetaData[SOP_INSTANCE_UID].Value[0];
 
         const prefix = 'wadors:';
 
@@ -60,10 +59,7 @@ export default async function createImageIdsAndCacheMetaData({
             SOPInstanceUIDToUse +
             '/frames/1';
 
-        cornerstoneDICOMImageLoader.wadors.metaDataManager.add(
-            imageId,
-            instanceMetaData
-        );
+        cornerstoneDICOMImageLoader.wadors.metaDataManager.add(imageId, instanceMetaData);
         return imageId;
     });
 
@@ -72,8 +68,7 @@ export default async function createImageIdsAndCacheMetaData({
     imageIds = convertMultiframeImageIds(imageIds);
 
     imageIds.forEach((imageId) => {
-        let instanceMetaData =
-            cornerstoneDICOMImageLoader.wadors.metaDataManager.get(imageId);
+        let instanceMetaData = cornerstoneDICOMImageLoader.wadors.metaDataManager.get(imageId);
 
         // It was using JSON.parse(JSON.stringify(...)) before but it is 8x slower
         instanceMetaData = removeInvalidTags(instanceMetaData);
@@ -104,8 +99,7 @@ export default async function createImageIdsAndCacheMetaData({
             // It's showing up like 'DECY\\ATTN\\SCAT\\DTIM\\RAN\\RADL\\DCAL\\SLSENS\\NORM'
             // but calculate-suv expects ['DECY', 'ATTN', ...]
             if (typeof instanceMetadata.CorrectedImage === 'string') {
-                instanceMetadata.CorrectedImage =
-                    instanceMetadata.CorrectedImage.split('\\');
+                instanceMetadata.CorrectedImage = instanceMetadata.CorrectedImage.split('\\');
             }
 
             if (instanceMetadata) {
@@ -114,13 +108,11 @@ export default async function createImageIdsAndCacheMetaData({
         });
         if (InstanceMetadataArray.length) {
             try {
-                const suvScalingFactors = calculateSUVScalingFactors(
-                    InstanceMetadataArray
-                );
+                const suvScalingFactors = calculateSUVScalingFactors(InstanceMetadataArray);
                 InstanceMetadataArray.forEach((instanceMetadata, index) => {
                     ptScalingMetaDataProvider.addInstance(
                         imageIds[index],
-                        suvScalingFactors[index]
+                        suvScalingFactors[index],
                     );
                 });
             } catch (error) {

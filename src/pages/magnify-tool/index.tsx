@@ -39,28 +39,20 @@ const MagnifyTool = () => {
         toolGroup.addTool(ZoomTool.toolName);
 
         toolGroup.setToolActive(MagnifyTool.toolName, {
-            bindings: [
-                { mouseButton: MouseBindings.Primary },
-            ],
+            bindings: [{ mouseButton: MouseBindings.Primary }],
         });
 
         toolGroup.setToolActive(PanTool.toolName, {
-            bindings: [
-                { mouseButton: MouseBindings.Auxiliary },
-            ],
+            bindings: [{ mouseButton: MouseBindings.Auxiliary }],
         });
 
         toolGroup.setToolActive(ZoomTool.toolName, {
-            bindings: [
-                { mouseButton: MouseBindings.Secondary },
-            ],
+            bindings: [{ mouseButton: MouseBindings.Secondary }],
         });
 
         const imageIds = await createImageIdsAndCacheMetaData({
-            StudyInstanceUID:
-                '1.3.6.1.4.1.14519.5.2.1.7009.2403.334240657131972136850343327463',
-            SeriesInstanceUID:
-                '1.3.6.1.4.1.14519.5.2.1.7009.2403.226151125820845824875394858561',
+            StudyInstanceUID: '1.3.6.1.4.1.14519.5.2.1.7009.2403.334240657131972136850343327463',
+            SeriesInstanceUID: '1.3.6.1.4.1.14519.5.2.1.7009.2403.226151125820845824875394858561',
             wadoRsRoot: 'https://d3t6nz73ql33tx.cloudfront.net/dicomweb',
         });
 
@@ -76,7 +68,7 @@ const MagnifyTool = () => {
         renderingEngine.enableElement(viewportInput);
         toolGroup.addViewport(viewportId, renderingEngineId);
 
-        const viewport = (renderingEngine.getViewport(viewportId)) as Types.IStackViewport;
+        const viewport = renderingEngine.getViewport(viewportId) as Types.IStackViewport;
         const stack = [imageIds[0]];
         await viewport.setStack(stack);
         viewport.render();
@@ -88,7 +80,7 @@ const MagnifyTool = () => {
         content.remove();
     });
 
-    return  (
+    return (
         <main>
             <header>magnify tool</header>
             <section id="content" />

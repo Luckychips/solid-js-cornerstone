@@ -1,8 +1,8 @@
-import {createEffect, createSignal, onCleanup} from 'solid-js';
+import { createEffect, createSignal, onCleanup } from 'solid-js';
 import * as cornerstone from '@cornerstonejs/core';
 import cornerstoneDICOMImageLoader from '@cornerstonejs/dicom-image-loader';
 import { initDemo } from '../../helpers/core';
-import * as cornerstoneTools from "@cornerstonejs/tools";
+import * as cornerstoneTools from '@cornerstonejs/tools';
 
 const StackImages = () => {
     const {
@@ -35,7 +35,9 @@ const StackImages = () => {
         };
 
         renderingEngine.enableElement(viewportInput);
-        const viewport = renderingEngine.getViewport(viewportId)  as cornerstone.Types.IStackViewport;
+        const viewport = renderingEngine.getViewport(
+            viewportId,
+        ) as cornerstone.Types.IStackViewport;
         if (files.length > 0) {
             const imageIds = [];
             for (let i = 0; i < files.length; i++) {
@@ -50,9 +52,7 @@ const StackImages = () => {
             const toolGroup = ToolGroupManager.createToolGroup('PAGE-STACK-IMAGES');
             toolGroup.addTool(StackScrollTool.toolName);
             toolGroup.setToolActive(StackScrollTool.toolName, {
-                bindings: [
-                    { mouseButton: MouseBindings.Primary },
-                ],
+                bindings: [{ mouseButton: MouseBindings.Primary }],
             });
             toolGroup.addViewport(viewportId, renderingEngineId);
         }
@@ -70,7 +70,7 @@ const StackImages = () => {
         setFiles(e.target.files);
     };
 
-    return  (
+    return (
         <main>
             <header>stack images</header>
             <input type="file" multiple onChange={selectFiles} />
